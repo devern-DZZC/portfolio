@@ -1835,39 +1835,44 @@
         
         // Form submission
         const contactForm = document.getElementById('contactForm');
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Simulate form submission
-                const submitBtn = this.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-                submitBtn.disabled = true;
-                
-                setTimeout(() => {
+if (contactForm) {
+    contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(contactForm);
+
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.disabled = true;
+
+        fetch('https://formspree.io/f/mrblaadp', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
                     submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-                    
+                    contactForm.reset();
+
                     setTimeout(() => {
                         submitBtn.innerHTML = originalText;
                         submitBtn.disabled = false;
-                        contactForm.reset();
-                        
-                        // Reset labels
-                        const labels = contactForm.querySelectorAll('label');
-                        labels.forEach(label => {
-                            label.style.top = '15px';
-                            label.style.left = label.parentElement.classList.contains('form-group') ? '15px' : '20px';
-                            label.style.fontSize = '';
-                            label.style.background = '';
-                            label.style.padding = '';
-                            label.style.color = '';
-                        });
                     }, 2000);
-                }, 1500);
+                } else {
+                    submitBtn.innerHTML = '<i class="fas fa-times"></i> Error!';
+                }
+            })
+            .catch(() => {
+                submitBtn.innerHTML = '<i class="fas fa-times"></i> Failed!';
             });
-        }
+    });
+}
+
     </script>
 </body>
 </html>
