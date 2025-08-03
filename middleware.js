@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export function middleware(NextRequest) {
+export function middleware(request) {
   const geo = request.geo;
 
   if (geo) {
