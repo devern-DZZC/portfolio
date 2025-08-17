@@ -754,11 +754,11 @@ h2::after {
     box-shadow: 0 10px 20px rgba(123, 77, 255, 0.3);
 }
 
-.project-links a:last-child {
+.project-links a:last-child, .project-links a:nth-child(2) {
     border: 1px solid var(--primary);
 }
 
-.project-links a:last-child:hover {
+.project-links a:last-child:hover, .project-links a:nth-child(2):hover {
     background: rgba(123, 77, 255, 0.1);
     transform: translateY(-3px);
 }
